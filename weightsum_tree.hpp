@@ -5,7 +5,6 @@
 #include <limits>
 #include <utility>
 #include <random>
-#include <unordered_map>
 
 namespace dense {
 namespace stochastic {
