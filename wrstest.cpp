@@ -8,11 +8,7 @@ const int iter = 1000000;
 
 int main() {
   std::default_random_engine generator;
-  std::vector<float> weights;
-  for (int k = 4; k>0; k--) {
-  	float r = ((double) rand() / (RAND_MAX));
-	weights.push_back(r * k);
-  }
+  std::vector<float> weights = {4, 3, 2, 1};
 
   nonuniform_int_distribution<int> selector(weights);
   std::cout << "Constructed" << std::endl;
