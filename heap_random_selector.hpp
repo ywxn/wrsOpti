@@ -3,7 +3,7 @@
 #include "completetree.hpp"
 #include "weightsum_tree.hpp"
 #include "heap.hpp"
-#include "utility/numerics.hpp"
+#include "numerics.hpp"
 #include <functional>
 #include <limits>
 #include <random>

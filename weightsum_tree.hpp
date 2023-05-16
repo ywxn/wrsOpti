@@ -1,7 +1,7 @@
 #ifndef WEIGHTSUM_TREE
 #define WEIGHTSUM_TREE
 #include "completetree.hpp"
-#include "utility/numerics.hpp"
+#include "numerics.hpp"
 #include <limits>
 #include <utility>
 #include <random>

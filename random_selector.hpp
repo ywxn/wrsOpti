@@ -2,7 +2,7 @@
 #define RANDOM_SELECTOR
 #include "completetree.hpp"
 #include "weightsum_tree.hpp"
-#include "utility/numerics.hpp"
+#include "numerics.hpp"
 #include <limits>
 #include <utility>
 #include <random>
@@ -22,9 +22,9 @@ class nonuniform_int_distribution : protected complete_tree<IntType, std::pair<R
   using WeightSum = weightsum_tree<This, IntType, precision>;
   friend WeightSum;
   using PosType = typename BaseTree::position_type;
-  static PosType left_of(PosType i) { return BaseTree::left_of(i);}
-  static PosType right_of(PosType i) { return BaseTree::right_of(i);}
-  static PosType parent_of(PosType i) { return BaseTree::parent_of(i);}
+  static constexpr PosType left_of(PosType i) { return 2*i + 1;}
+  static constexpr PosType right_of(PosType i) { return 2*i + 2;}
+  static constexpr PosType parent_of(PosType i) { return (i - 1) / 2;}
 
   //Weights can be of any type, but most be convertable to Real values
   nonuniform_int_distribution() = delete;
@@ -35,20 +35,23 @@ class nonuniform_int_distribution : protected complete_tree<IntType, std::pair<R
     BaseTree(weights.size()),
     WeightSum(*this)
   {
-    for (auto w : weights) {
+    for (const auto& w : weights) {
       BaseTree::emplace_entry(w, 0.0);
     }
     WeightSum::compute_weights();
   }
 
+  
   Real& weight_of(PosType p) {
     return BaseTree::value_of(p).first;
   }
+
   Real& weightsum_of(PosType p) {
     return BaseTree::value_of(p).second;
   }
+
   const Real& weightsum_of(PosType p) const {
-    return const_cast<This*>(this)->weightsum_of(p);
+    return BaseTree::value_of(p).second;
   }
 
   PosType id_of(PosType p) { return p; }
