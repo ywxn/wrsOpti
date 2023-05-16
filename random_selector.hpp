@@ -22,8 +22,8 @@ class nonuniform_int_distribution : protected complete_tree<IntType, std::pair<R
   using WeightSum = weightsum_tree<This, IntType, precision>;
   friend WeightSum;
   using PosType = typename BaseTree::position_type;
-  static constexpr PosType left_of(PosType i) { return 2*i + 1;}
-  static constexpr PosType right_of(PosType i) { return 2*i + 2;}
+  static constexpr PosType left_of(PosType i) { return 2 * i + 1;}
+  static constexpr PosType right_of(PosType i) { return 2 * i + 2;}
   static constexpr PosType parent_of(PosType i) { return (i - 1) / 2;}
 
   //Weights can be of any type, but most be convertable to Real values
@@ -36,7 +36,7 @@ class nonuniform_int_distribution : protected complete_tree<IntType, std::pair<R
     WeightSum(*this)
   {
     for (const auto& w : weights) {
-      BaseTree::emplace_entry(w, 0.0);
+      BaseTree::emplace_entry(std::move(w), 0.0);
     }
     WeightSum::compute_weights();
   }

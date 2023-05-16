@@ -5,6 +5,7 @@
 #include <limits>
 #include <utility>
 #include <random>
+#include <unordered_map>
 
 namespace dense {
 namespace stochastic {
@@ -76,13 +77,16 @@ class weightsum_tree {
   const Tree& _tree() const { return *static_cast<const Tree*>(this); }
   Real checked_weightsum(PosType node) const { return node > _tree().last() ? 0 : _tree().weightsum_of(node); }
   Real checked_weight(PosType node) const { return node > _tree().last() ? 0 : _tree().weight_of(node); }
-  Real sum_weights(PosType i) {
-    if (i > _tree().last()) return 0.0f;
-    _tree().weightsum_of(i) =
-      sum_weights(Tree::left_of(i)) + sum_weights(Tree::right_of(i)) 
-      + _tree().weight_of(i);
+Real sum_weights(PosType i) {
+  if (i > _tree().last()) return 0.0f;
+  if (_tree().weightsum_of(i) != 0.0f) {
     return _tree().weightsum_of(i);
   }
+  _tree().weightsum_of(i) =
+    sum_weights(Tree::left_of(i)) + sum_weights(Tree::right_of(i))
+    + _tree().weight_of(i);
+  return _tree().weightsum_of(i);
+}  
   bool isAncestor(PosType i, PosType j) {
     unsigned int ilz = __builtin_clz(i+1);
     unsigned int jlz = __builtin_clz(j+1);
